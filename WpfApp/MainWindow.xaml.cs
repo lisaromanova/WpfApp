@@ -24,6 +24,7 @@ namespace WpfApp
         {
             InitializeComponent();
             Classes.FrameClass.frmMain = frmMain;
+            Classes.FrameClass.frmMain.Navigate(new Pages.MenuPage());
         }
     }
 }

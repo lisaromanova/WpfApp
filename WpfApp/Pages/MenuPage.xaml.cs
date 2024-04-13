@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,6 +24,32 @@ namespace WpfApp.Pages
         public MenuPage()
         {
             InitializeComponent();
+        }
+
+        private void btnSolve_Click(object sender, RoutedEventArgs e)
+        {
+            if(cbEnterData.SelectedIndex != -1)
+            {
+                if(cbSolution.SelectedIndex != -1)
+                {
+                    if (Regex.IsMatch(tbN.Text, "^\\d$") && Convert.ToInt32(tbN.Text) > 0)
+                    {
+                        MessageBox.Show("Верно");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Введите целое число больше 0!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Выберите способ решения!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Выберите способ ввода данных!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

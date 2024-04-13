@@ -6,9 +6,32 @@
       xmlns:local="clr-namespace:WpfApp.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
+      FontFamily="Comic Sans MS"
+      FontSize="14"
       Title="MenuPage">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
+        </Grid.RowDefinitions>
+        <StackPanel VerticalAlignment="Center" Grid.Row="0">
+            <GroupBox Header="Способ решения">
+                <ComboBox Name="cbSolution">
+                    <ComboBoxItem>Симплекс-метод</ComboBoxItem>
+                    <ComboBoxItem>Метод Гомори</ComboBoxItem>
+                </ComboBox>
+            </GroupBox>
+            <GroupBox Header="Ввод данных">
+                <ComboBox Name="cbEnterData">
+                    <ComboBoxItem>Ручной ввод</ComboBoxItem>
+                    <ComboBoxItem>Генерация случайным образом</ComboBoxItem>
+                </ComboBox>
+            </GroupBox>
+            <GroupBox Header="Введите количество видов продукции">
+                <TextBox Name="tbN"/>
+            </GroupBox>
+        </StackPanel>
+        <Button Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Решить" Click="btnSolve_Click"/>
     </Grid>
 </Page>
