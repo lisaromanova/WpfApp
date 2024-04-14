@@ -34,7 +34,7 @@ namespace WpfApp.Pages
                 {
                     if (Regex.IsMatch(tbN.Text, "^\\d$") && Convert.ToInt32(tbN.Text) > 0)
                     {
-                        MessageBox.Show("Верно");
+                        Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
                     }
                     else
                     {

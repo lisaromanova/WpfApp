@@ -16,6 +16,7 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
         <StackPanel VerticalAlignment="Center" Grid.Row="0">
+            <TextBlock Text="Экономическая задача оптимизации закупок" FontSize="24" Margin="0,0,0,20" HorizontalAlignment="Center"/>
             <GroupBox Header="Способ решения">
                 <ComboBox Name="cbSolution">
                     <ComboBoxItem>Симплекс-метод</ComboBoxItem>
@@ -28,10 +29,10 @@
                     <ComboBoxItem>Генерация случайным образом</ComboBoxItem>
                 </ComboBox>
             </GroupBox>
-            <GroupBox Header="Введите количество видов продукции">
+            <GroupBox Header="Количество видов продукции">
                 <TextBox Name="tbN"/>
             </GroupBox>
         </StackPanel>
-        <Button Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Решить" Click="btnSolve_Click"/>
+        <Button Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Ввод данных" Click="btnSolve_Click"/>
     </Grid>
 </Page>
