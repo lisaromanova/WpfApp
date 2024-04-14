@@ -23,13 +23,13 @@
         <DataGrid Grid.Row="1" Name="dtData" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Вид продукции" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Каллорийность" Binding="{Binding Calories, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="Калорийность" Binding="{Binding Calories, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <DataGridTextColumn Header="Вес" Binding="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
                 <DataGridTextColumn Header= "Максимальное количество упаковок" Binding="{Binding MaxCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2">
-            <GroupBox Width="250" HorizontalAlignment="Left"  Header="Минимальная каллорийность">
+            <GroupBox Width="250" HorizontalAlignment="Left"  Header="Минимальная калорийность">
                 <TextBox Name="tbMaxCallor"/>
             </GroupBox>
         </StackPanel>
