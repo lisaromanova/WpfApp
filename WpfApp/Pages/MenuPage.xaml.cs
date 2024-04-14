@@ -32,7 +32,7 @@ namespace WpfApp.Pages
             {
                 if(cbSolution.SelectedIndex != -1)
                 {
-                    if (Regex.IsMatch(tbN.Text, "^\\d$") && Convert.ToInt32(tbN.Text) > 0)
+                    if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1)
                     {
                         Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
                     }

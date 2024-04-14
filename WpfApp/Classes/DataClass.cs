@@ -11,6 +11,6 @@ namespace WpfApp.Classes
         public int Id { get; set; } 
         public double Weight { get; set; }
         public double Calories { get; set; }
-        public double MaxCount { get; set; }
+        public int MaxCount { get; set; }
     }
 }

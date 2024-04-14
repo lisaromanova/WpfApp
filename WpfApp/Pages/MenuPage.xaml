@@ -33,6 +33,6 @@
                 <TextBox Name="tbN"/>
             </GroupBox>
         </StackPanel>
-        <Button Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Ввод данных" Click="btnSolve_Click"/>
+        <Button Style="{StaticResource ButtonTemplate}" IsDefault="True" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Ввод данных" Click="btnSolve_Click"/>
     </Grid>
 </Page>

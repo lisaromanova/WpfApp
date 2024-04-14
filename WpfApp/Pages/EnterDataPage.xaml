@@ -10,17 +10,30 @@
 
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
-        <DataGrid Name="dtData" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
+        <TextBlock>
+            В таблицу необходимо ввести все необходимые данные для каждого вида продукции.<LineBreak/>
+            Для ввода вещественных чисел необходимо использовать точку.<LineBreak/>
+            Для возврата к предыдущему шагу необходимо нажать кнопку "Назад".<LineBreak/>
+            После ввода всех данных необходимо нажать кнопку "Решить".
+        </TextBlock>
+        <DataGrid Grid.Row="1" Name="dtData" CanUserAddRows="False" CanUserDeleteRows="False" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Вид продукции" Binding="{Binding Id}"/>
-                <DataGridTextColumn Header="Каллорийность" />
-                <DataGridTextColumn Header="Вес"/>
-                <DataGridTextColumn Header= "Максимальное количество"/>
+                <DataGridTextColumn Header="Каллорийность" Binding="{Binding Calories, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header="Вес" Binding="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
+                <DataGridTextColumn Header= "Максимальное количество упаковок" Binding="{Binding MaxCount, Mode=TwoWay, UpdateSourceTrigger=LostFocus}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="1" Name="btnSolve" Content="Решить"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="2">
+            <GroupBox Width="250" HorizontalAlignment="Left"  Header="Минимальная каллорийность">
+                <TextBox Name="tbMaxCallor"/>
+            </GroupBox>
+        </StackPanel>
+        <Button HorizontalAlignment="Left" Style="{StaticResource ButtonTemplate}" Width="200" Height="50" Grid.Row="2" Name="btnBack" Content="Назад" Click="btnBack_Click"/>
+        <Button HorizontalAlignment="Right" Style="{StaticResource ButtonTemplate}" IsDefault="True" Width="200" Height="50" Grid.Row="2" Name="btnSolve" Content="Решить" Click="btnSolve_Click"/>
     </Grid>
 </Page>

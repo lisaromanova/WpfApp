@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace WpfApp.Classes
 {
@@ -45,17 +46,17 @@ namespace WpfApp.Classes
         /// <param name="maxCount">Максимальное количество продуктов</param>
         /// <param name="K">Минимальная суммарная калорийность продуктов</param>
         /// <returns>Симплекс-таблица</returns>
-        static double[,] FormingSimplexTable(int n, double[] weight, double[] calories, double[] maxCount, double K)
+        static double[,] FormingSimplexTable(int n, List<DataClass> listData, double K)
         {
             double[,] simplex_table = new double[n + 4, n + n + 3];
             //Заполение C, каллорийности, ограничений, свободных коэффициентов
             for (int i = 1; i <= n; i++)
             {
-                simplex_table[0, i] = weight[i - 1];
+                simplex_table[0, i] = listData[i-1].Weight;
                 simplex_table[1, i] = i;
-                simplex_table[2, i] = calories[i - 1] * (-1);
+                simplex_table[2, i] = listData[i - 1].Calories * (-1);
                 simplex_table[2 + i, i] = 1;
-                simplex_table[2 + i, simplex_table.GetLength(1) - 1] = maxCount[i - 1];
+                simplex_table[2 + i, simplex_table.GetLength(1) - 1] = Convert.ToDouble(listData[i - 1].MaxCount);
             }
             simplex_table[2, simplex_table.GetLength(1) - 1] = K * (-1);
             //Заполнение базиса
@@ -255,7 +256,7 @@ namespace WpfApp.Classes
             return true;
         }
 
-        static void Main1()
+        public static void Solve(int n, List<DataClass> listData, double K)
         {
             //int n = 3;
             //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
@@ -265,16 +266,16 @@ namespace WpfApp.Classes
             //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
             //double K = 5000;
 
-            int n = 2;
-            double[] weight = { 10, 20 }, calories = { 30, 40 }, maxCount = { 5, 6 };
-            double K = 200;
+            //int n = 2;
+            //double[] weight = { 10, 20 }, calories = { 30, 40 }, maxCount = { 5, 6 };
+            //double K = 200;
 
             //int n;
             //double[] weight, calories, maxCount;
             //double K;
             //EnterData(out n, out weight, out calories, out maxCount, out K);
             
-            double[,] simplex_table = FormingSimplexTable(n, weight, calories, maxCount, K);
+            double[,] simplex_table = FormingSimplexTable(n, listData, K);
             PrintSimplexTable(simplex_table);
             bool solution = true;
             while (true)
@@ -300,11 +301,25 @@ namespace WpfApp.Classes
             }
             if (solution)
             {
-                Console.WriteLine($"Ответ:");
+                string str = "Ответ: ";
+                for (int i = 1; i <= n; i++)
+                {
+                    double x = 0;
+                    for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
+                    {
+                        if (i == simplex_table[j, 0])
+                        {
+                            x = simplex_table[j, simplex_table.GetLength(1) - 1];
+                        }
+                    }
+                    str += $"{i} вид продукции {x}\n";
+                }
+                str += $"Минимальный вес {simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1]}";
+                MessageBox.Show(str);
             }
             else
             {
-                Console.WriteLine("Решения не существует");
+                MessageBox.Show("Решения не существует");
             }
         }
     }
