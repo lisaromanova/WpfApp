@@ -9,41 +9,12 @@ namespace WpfApp.Classes
 {
     public class SimplexMethod
     {
-        /// <summary>
-        /// Ввод данных
-        /// </summary>
-        /// <param name="n">Количество видов продуктов</param>
-        /// <param name="weight">Вес продуктов</param>
-        /// <param name="calories">Калории продуктов</param>
-        /// <param name="maxCount">Максимальное количество продуктов</param>
-        /// <param name="K">Минимальная суммарная калорийность продуктов</param>
-        static void EnterData(out int n, out double[] weight, out double[] calories, out double[] maxCount, out double K)
-        {
-            Console.WriteLine("Введите количество видов продуктов: ");
-            n = Convert.ToInt32(Console.ReadLine());
-            weight = new double[n];
-            calories = new double[n];
-            maxCount = new double[n];
-            for (int i = 0; i < n; i++)
-            {
-                Console.WriteLine($"Введите вес {i + 1} вида продукции");
-                weight[i] = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine($"Введите каллории {i + 1} вида продукции");
-                calories[i] = Convert.ToDouble(Console.ReadLine());
-                Console.WriteLine($"Введите максимальное количество упаковок {i + 1} вида продукции");
-                maxCount[i] = Convert.ToDouble(Console.ReadLine());
-            }
-            Console.WriteLine("Введите минимальную суммарную каллорийность");
-            K = Convert.ToDouble(Console.ReadLine());
-        }
 
         /// <summary>
         /// Формирование симплекс-таблицы
         /// </summary>
         /// <param name="n">Количество видов продуктов</param>
-        /// <param name="weight">Вес продуктов</param>
-        /// <param name="calories">Калории продуктов</param>
-        /// <param name="maxCount">Максимальное количество продуктов</param>
+        /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность продуктов</param>
         /// <returns>Симплекс-таблица</returns>
         static double[,] FormingSimplexTable(int n, List<DataClass> listData, double K)
@@ -256,6 +227,12 @@ namespace WpfApp.Classes
             return true;
         }
 
+        /// <summary>
+        /// Решение задачи
+        /// </summary>
+        /// <param name="n">Количество видов продуктов</param>
+        /// <param name="listData">Список с данными</param>
+        /// <param name="K">Минимальная суммарная калорийность</param>
         public static void Solve(int n, List<DataClass> listData, double K)
         {
             //int n = 3;
