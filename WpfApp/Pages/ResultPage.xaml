@@ -13,6 +13,7 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
+        <TextBlock Name="tbResult" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         <Button Name="btnStart" Grid.Row="1" Content="Решить заново" Style="{StaticResource ButtonTemplate}" Height="40" Width="250" HorizontalAlignment="Center" VerticalAlignment="Center" Click="btnStart_Click"/>
     </Grid>
 </Page>

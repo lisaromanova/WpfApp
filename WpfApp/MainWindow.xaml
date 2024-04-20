@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApp"
         mc:Ignorable="d"
-        Title="Экономическая задача оптимизации закупок" Height="450" Width="800">
+        Title="Экономическая задача оптимизации закупок" Height="450" MinHeight="450" MaxHeight="450" Width="800" MinWidth="800" MaxWidth="800">
     <Grid>
         <Frame Margin="10" Name="frmMain" NavigationUIVisibility="Hidden"/>
     </Grid>

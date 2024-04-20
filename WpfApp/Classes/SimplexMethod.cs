@@ -233,7 +233,8 @@ namespace WpfApp.Classes
         /// <param name="n">Количество видов продуктов</param>
         /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность</param>
-        public static void Solve(int n, List<DataClass> listData, double K)
+        /// <returns>Результат</returns>
+        public static string Solve(int n, List<DataClass> listData, double K)
         {
             //int n = 3;
             //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
@@ -246,11 +247,6 @@ namespace WpfApp.Classes
             //int n = 2;
             //double[] weight = { 10, 20 }, calories = { 30, 40 }, maxCount = { 5, 6 };
             //double K = 200;
-
-            //int n;
-            //double[] weight, calories, maxCount;
-            //double K;
-            //EnterData(out n, out weight, out calories, out maxCount, out K);
             
             double[,] simplex_table = FormingSimplexTable(n, listData, K);
             PrintSimplexTable(simplex_table);
@@ -278,7 +274,7 @@ namespace WpfApp.Classes
             }
             if (solution)
             {
-                string str = "Ответ: ";
+                string str = "Решение найдено!\n";
                 for (int i = 1; i <= n; i++)
                 {
                     double x = 0;
@@ -289,14 +285,14 @@ namespace WpfApp.Classes
                             x = simplex_table[j, simplex_table.GetLength(1) - 1];
                         }
                     }
-                    str += $"{i} вид продукции {x}\n";
+                    str += $"{i} вид продукции {Math.Round(x, 2)}\n";
                 }
-                str += $"Минимальный вес {simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1]}";
-                MessageBox.Show(str);
+                str += $"Минимальный вес {Math.Round(simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1], 2)}";
+                return str;
             }
             else
             {
-                MessageBox.Show("Решения не существует");
+                return "Решения не существует";
             }
         }
     }

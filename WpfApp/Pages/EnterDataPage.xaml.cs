@@ -82,7 +82,7 @@ namespace WpfApp.Pages
                 {
                     if(solve == 0)
                     {
-                        Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text));
+                        Classes.FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text))));
                     }
                 }
                 else

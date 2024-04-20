@@ -20,9 +20,10 @@ namespace WpfApp.Pages
     /// </summary>
     public partial class ResultPage : Page
     {
-        public ResultPage()
+        public ResultPage(string result)
         {
             InitializeComponent();
+            tbResult.Text = result;
         }
 
         private void btnStart_Click(object sender, RoutedEventArgs e)
