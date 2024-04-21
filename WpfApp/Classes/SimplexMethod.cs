@@ -9,7 +9,6 @@ namespace WpfApp.Classes
 {
     public class SimplexMethod
     {
-
         /// <summary>
         /// Формирование симплекс-таблицы
         /// </summary>
@@ -59,7 +58,7 @@ namespace WpfApp.Classes
         /// <summary>
         /// Проверка на наличие отрицательных свободных коэффициентов
         /// </summary>
-        /// <param name="simplex_table">Симплкс-таблица</param>
+        /// <param name="simplex_table">Симплекс-таблица</param>
         /// <returns>True - есть отрицательные свободные коэффициенты, False - нет отрицательных свободных коэффициентов</returns>
         static bool CheckNegativeElements(double[,] simplex_table)
         {
@@ -228,12 +227,140 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
+        /// Нахождение дробной части
+        /// </summary>
+        /// <param name="floatNumber">Вещественное число</param>
+        /// <returns>Дробная часть</returns>
+        static double FractionalPart (double floatNumber)
+        {
+            return floatNumber - Math.Truncate(floatNumber);
+        }
+
+        /// <summary>
+        /// Проверка на наличие дробных чисел в ответе
+        /// </summary>
+        /// <param name="masSolution">Массив с решением</param>
+        /// <returns>True - дробное число найдено, False - дробные числа не найдены</returns>
+        static bool CheckFractionalPart(double[,] masSolution)
+        {
+            for (int i = 0; i < masSolution.GetLength(1) - 1; i++) 
+            {
+                if (FractionalPart(masSolution[0, i]) != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Формирование новой симплекс-таблицы, добавление нового ограничения
+        /// </summary>
+        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <returns>Новая сиплекс-таблица</returns>
+        static double[,] NewLimitation(double[,] simplex_table)
+        {
+            double[,] new_simplex_table = new double[simplex_table.GetLength(0) + 1, simplex_table.GetLength(1)];
+            for (int i = 0; i < new_simplex_table.GetLength(0) - 2; i++)
+            {
+                for (int j = 0; j < new_simplex_table.GetLength(1); j++)
+                {
+                    new_simplex_table[i, j] = simplex_table[i, j];
+                }
+            }
+            for (int i = 0; i < new_simplex_table.GetLength(1); i++)
+            {
+                new_simplex_table[new_simplex_table.GetLength(0) - 1, i] = simplex_table[simplex_table.GetLength(0) - 1, i];
+            }
+            return new_simplex_table;
+        }
+
+        /// <summary>
+        /// Поиск максимальной дробной части
+        /// </summary>
+        /// <param name="masSolution">Массив с решением</param>
+        /// <returns>Индекс строки с максимальной дробной частью</returns>
+        static double MaxFractionalPart(double[,] masSolution)
+        {
+            double max = 0;
+            double index = 0;
+            for (int i = 0; i < masSolution.GetLength(1) - 1; i++)
+            {
+                if (masSolution[0, i] > max)
+                {
+                    max = masSolution[0, i];
+                    index = masSolution[1, i];
+                }
+            }
+            return index;
+        }
+
+        static void MethodGomori(double[,] masSolution, double[,] simplex_table)
+        {
+            double max = MaxFractionalPart(masSolution);
+            double[,] new_simplex_table = NewLimitation(simplex_table);
+
+        }
+
+        /// <summary>
+        /// Вывод данных
+        /// </summary>
+        /// <param name="solution">Решение (есть или нет)</param>
+        /// <param name="masSolution">Массив с решением</param>
+        /// <returns>Строка с решением</returns>
+        static string printData(bool solution, double[,] masSolution)
+        {
+            if (solution)
+            {
+                string str = "Решение найдено!\n";
+                for(int i = 0; i < masSolution.GetLength(1) - 1; i++)
+                {
+                    str += $"{i + 2} вид продукции {Math.Round(masSolution[0, i], 2)}\n";
+                }
+                str += $"Минимальный вес {Math.Round(masSolution[0, masSolution.GetLength(1) - 1], 2)}";
+                return str;
+            }
+            else
+            {
+                return "Решения не существует";
+            }
+        }
+
+        /// <summary>
+        /// Формирование массива с ответом
+        /// </summary>
+        /// <param name="n">Количество видов продукции</param>
+        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <returns>Массив с ответом и индексом строки ответа</returns>
+        static double[,] FormingMasSolution(int n, double[,] simplex_table)
+        {
+            double[,] masSolution = new double[2, n + 1];
+            for (int i = 1; i <= n; i++)
+            {
+                double x = 0;
+                int index = 0;
+                for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
+                {
+                    if (i == simplex_table[j, 0])
+                    {
+                        x = simplex_table[j, simplex_table.GetLength(1) - 1];
+                        index = j;
+                    }
+                }
+                masSolution[0, i - 1] = x;
+                masSolution[1, i - 1] = index;
+            }
+            masSolution[0, masSolution.GetLength(1) - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
+            return masSolution;
+        }
+
+        /// <summary>
         /// Решение задачи
         /// </summary>
         /// <param name="n">Количество видов продуктов</param>
         /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность</param>
-        /// <returns>Результат</returns>
+        /// <returns>Массив с решением</returns>
         public static string Solve(int n, List<DataClass> listData, double K)
         {
             //int n = 3;
@@ -247,7 +374,7 @@ namespace WpfApp.Classes
             //int n = 2;
             //double[] weight = { 10, 20 }, calories = { 30, 40 }, maxCount = { 5, 6 };
             //double K = 200;
-            
+
             double[,] simplex_table = FormingSimplexTable(n, listData, K);
             PrintSimplexTable(simplex_table);
             bool solution = true;
@@ -272,28 +399,12 @@ namespace WpfApp.Classes
                     }
                 }
             }
-            if (solution)
+            double[,] masSolution = FormingMasSolution(n, simplex_table);
+            if (CheckFractionalPart(masSolution))
             {
-                string str = "Решение найдено!\n";
-                for (int i = 1; i <= n; i++)
-                {
-                    double x = 0;
-                    for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
-                    {
-                        if (i == simplex_table[j, 0])
-                        {
-                            x = simplex_table[j, simplex_table.GetLength(1) - 1];
-                        }
-                    }
-                    str += $"{i} вид продукции {Math.Round(x, 2)}\n";
-                }
-                str += $"Минимальный вес {Math.Round(simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1], 2)}";
-                return str;
+                MethodGomori(masSolution, simplex_table);
             }
-            else
-            {
-                return "Решения не существует";
-            }
+            return printData(solution, masSolution);
         }
     }
 }
