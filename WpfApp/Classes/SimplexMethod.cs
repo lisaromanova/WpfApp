@@ -245,6 +245,7 @@ namespace WpfApp.Classes
         {
             for (int i = 0; i < masSolution.GetLength(1) - 1; i++) 
             {
+                //если дробная часть есть
                 if (FractionalPart(masSolution[0, i]) != 0)
                 {
                     return true;
@@ -257,19 +258,50 @@ namespace WpfApp.Classes
         /// Формирование новой симплекс-таблицы, добавление нового ограничения
         /// </summary>
         /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="indexMax">Индекс строки с максимальной дробной частью</param>
         /// <returns>Новая сиплекс-таблица</returns>
-        static double[,] NewLimitation(double[,] simplex_table)
+        static double[,] NewLimitation(double[,] simplex_table, double indexMax)
         {
-            double[,] new_simplex_table = new double[simplex_table.GetLength(0) + 1, simplex_table.GetLength(1)];
+            //инициализация новой симплекс-таблицы с ограничением
+            double[,] new_simplex_table = new double[simplex_table.GetLength(0) + 1, simplex_table.GetLength(1) + 1];
+            //перенос данных симплекс-таблицы
             for (int i = 0; i < new_simplex_table.GetLength(0) - 2; i++)
             {
                 for (int j = 0; j < new_simplex_table.GetLength(1); j++)
                 {
+                    if (j == new_simplex_table.GetLength(1) - 2)
+                    {
+                        new_simplex_table[i, j + 1] = simplex_table[i, j];
+                        break;
+                    }
                     new_simplex_table[i, j] = simplex_table[i, j];
                 }
             }
+            new_simplex_table[1, new_simplex_table.GetLength(1) - 2] = new_simplex_table[1, new_simplex_table.GetLength(1) - 3] + 1;
+            new_simplex_table[new_simplex_table.GetLength(0) - 2, 0] = new_simplex_table[1, new_simplex_table.GetLength(1) - 2];
+            new_simplex_table[new_simplex_table.GetLength(0) - 2, new_simplex_table.GetLength(1) - 2] = 1;
+            //добавление ограничения
+            for (int i = 1; i < new_simplex_table.GetLength(1) - 2; i++)
+            {
+                //если число отрицательное
+                if (FractionalPart(simplex_table[Convert.ToInt32(indexMax), i]) < 0)
+                {
+                    new_simplex_table[new_simplex_table.GetLength(0) - 2, i] = (FractionalPart(simplex_table[Convert.ToInt32(indexMax), i]) - Math.Floor(simplex_table[Convert.ToInt32(indexMax), i])) * (-1);
+                }
+                else
+                {
+                    new_simplex_table[new_simplex_table.GetLength(0) - 2, i] = FractionalPart(simplex_table[Convert.ToInt32(indexMax), i]) * (-1);
+                }
+            }
+            new_simplex_table[new_simplex_table.GetLength(0) - 2, new_simplex_table.GetLength(1) - 1] = FractionalPart(simplex_table[Convert.ToInt32(indexMax), simplex_table.GetLength(1) - 1]) * (-1);
+            //перенос дельт
             for (int i = 0; i < new_simplex_table.GetLength(1); i++)
             {
+                if (i == new_simplex_table.GetLength(1) - 2)
+                {
+                    new_simplex_table[new_simplex_table.GetLength(0) - 1, i + 1] = simplex_table[simplex_table.GetLength(0) - 1, i];
+                    break;
+                }
                 new_simplex_table[new_simplex_table.GetLength(0) - 1, i] = simplex_table[simplex_table.GetLength(0) - 1, i];
             }
             return new_simplex_table;
@@ -286,9 +318,9 @@ namespace WpfApp.Classes
             double index = 0;
             for (int i = 0; i < masSolution.GetLength(1) - 1; i++)
             {
-                if (masSolution[0, i] > max)
+                if (FractionalPart(masSolution[0, i]) > max)
                 {
-                    max = masSolution[0, i];
+                    max = FractionalPart(masSolution[0, i]);
                     index = masSolution[1, i];
                 }
             }
@@ -297,9 +329,9 @@ namespace WpfApp.Classes
 
         static void MethodGomori(double[,] masSolution, double[,] simplex_table)
         {
-            double max = MaxFractionalPart(masSolution);
-            double[,] new_simplex_table = NewLimitation(simplex_table);
-
+            double indexMax = MaxFractionalPart(masSolution);
+            double[,] new_simplex_table = NewLimitation(simplex_table, indexMax);
+            MessageBox.Show(indexMax.ToString());
         }
 
         /// <summary>
@@ -310,6 +342,7 @@ namespace WpfApp.Classes
         /// <returns>Строка с решением</returns>
         static string printData(bool solution, double[,] masSolution)
         {
+            //проверка на наличие решения
             if (solution)
             {
                 string str = "Решение найдено!\n";
@@ -334,6 +367,7 @@ namespace WpfApp.Classes
         /// <returns>Массив с ответом и индексом строки ответа</returns>
         static double[,] FormingMasSolution(int n, double[,] simplex_table)
         {
+            //матрица, состоящая из строки решений и строки индексов в симплекс-таблице
             double[,] masSolution = new double[2, n + 1];
             for (int i = 1; i <= n; i++)
             {
@@ -341,6 +375,7 @@ namespace WpfApp.Classes
                 int index = 0;
                 for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
                 {
+                    //если базис равен виду продукции решение есть
                     if (i == simplex_table[j, 0])
                     {
                         x = simplex_table[j, simplex_table.GetLength(1) - 1];
@@ -350,6 +385,7 @@ namespace WpfApp.Classes
                 masSolution[0, i - 1] = x;
                 masSolution[1, i - 1] = index;
             }
+            //записываем минимальный вес
             masSolution[0, masSolution.GetLength(1) - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
             return masSolution;
         }
@@ -361,7 +397,7 @@ namespace WpfApp.Classes
         /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность</param>
         /// <returns>Массив с решением</returns>
-        public static string Solve(int n, List<DataClass> listData, double K)
+        public static string Solve(int n, List<DataClass> listData, double K, int method)
         {
             //int n = 3;
             //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
@@ -400,7 +436,7 @@ namespace WpfApp.Classes
                 }
             }
             double[,] masSolution = FormingMasSolution(n, simplex_table);
-            if (CheckFractionalPart(masSolution))
+            if (CheckFractionalPart(masSolution) && method == 1)
             {
                 MethodGomori(masSolution, simplex_table);
             }
