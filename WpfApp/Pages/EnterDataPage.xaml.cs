@@ -37,7 +37,7 @@ namespace WpfApp.Pages
                     data.Add(new Classes.DataClass 
                     { 
                         Id = i + 1, 
-                        Weight = rnd.Next(1, 1000), 
+                        Weight = rnd.Next(100, 1000), 
                         Calories = rnd.Next(1, 1000), 
                         MaxCount = rnd.Next(1, 50) 
                     });
@@ -80,10 +80,10 @@ namespace WpfApp.Pages
             {
                 if (Regex.IsMatch(tbMaxCallor.Text, "^\\d+([.]\\d+)?$"))
                 {
-                    if(solve == 0)
-                    {
+                    //if(solve == 0)
+                    //{
                         Classes.FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text), solve)));
-                    }
+                    //}
                 }
                 else
                 {

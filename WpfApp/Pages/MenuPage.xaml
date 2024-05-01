@@ -20,7 +20,7 @@
             <GroupBox Header="Способ решения">
                 <ComboBox Name="cbSolution">
                     <ComboBoxItem>Симплекс-метод</ComboBoxItem>
-                    <ComboBoxItem>Метод Гомори</ComboBoxItem>
+                    <!--<ComboBoxItem>Метод Гомори</ComboBoxItem>-->
                 </ComboBox>
             </GroupBox>
             <GroupBox Header="Ввод данных">
