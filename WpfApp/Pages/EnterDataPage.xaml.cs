@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WpfApp.Classes;
 
 namespace WpfApp.Pages
 {
@@ -21,20 +22,20 @@ namespace WpfApp.Pages
     /// </summary>
     public partial class EnterDataPage : Page
     {
-        List<Classes.DataClass> data;
+        List<DataClass> data;
         int solve, n;
         public EnterDataPage(int solve, int enter, int n)
         {
             InitializeComponent();
             this.solve = solve;
             this.n = n;
-            data = new List<Classes.DataClass>();
+            data = new List<DataClass>();
             Random rnd = new Random();
             for (int i = 0; i < n; i++)
             {
                 if (enter == 1)
                 {
-                    data.Add(new Classes.DataClass 
+                    data.Add(new DataClass 
                     { 
                         Id = i + 1, 
                         Weight = rnd.Next(100, 1000), 
@@ -44,7 +45,7 @@ namespace WpfApp.Pages
                 }
                 else
                 {
-                    data.Add(new Classes.DataClass
+                    data.Add(new DataClass
                     {
                         Id = i + 1
                     });
@@ -62,7 +63,7 @@ namespace WpfApp.Pages
 
         bool CheckData()
         {
-            foreach(Classes.DataClass dataClass in data)
+            foreach(DataClass dataClass in data)
             {
                 if (dataClass.Weight <= 0 ||
                     dataClass.Calories <= 0 ||
@@ -80,10 +81,18 @@ namespace WpfApp.Pages
             {
                 if (Regex.IsMatch(tbMaxCallor.Text, "^\\d+([.]\\d+)?$"))
                 {
-                    //if(solve == 0)
-                    //{
-                        Classes.FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text), solve)));
-                    //}
+                    switch (solve)
+                    {
+                        case 0:
+                            IteratingOverTheSetOfAcceptableSolutions.Method(data, Convert.ToDouble(tbMaxCallor.Text));
+                            break;
+                        case 1:
+                            FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text), solve)));
+                            break;
+                        default:
+                            MessageBox.Show("Ошибка!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            break;
+                    }
                 }
                 else
                 {
@@ -99,7 +108,7 @@ namespace WpfApp.Pages
 
         private void btnBack_Click(object sender, RoutedEventArgs e)
         {
-            Classes.FrameClass.frmMain.GoBack();
+            FrameClass.frmMain.GoBack();
         }
     }
 }
