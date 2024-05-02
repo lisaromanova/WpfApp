@@ -13,8 +13,11 @@ namespace WpfApp.Classes
         public static void Method(List<DataClass> datas, double K)
         {
             List<double[]> myList = new List<double[]>();
+            double minWeight = 0;
+            List<double> solution = new List<double>();
             foreach (DataClass x in datas)
             {
+                minWeight += x.Weight * x.MaxCount;
                 double[] arr = new double[x.MaxCount + 1];
                 for (int i = 0; i <= x.MaxCount; i++)
                 {
@@ -39,15 +42,31 @@ namespace WpfApp.Classes
 
             //at this point the permutations variable contains all permutations
             string str = "";
+            
             foreach (List<double> list1 in permutations)
             {
-                foreach (double item in list1)
+                double kalor = 0;
+                double weight = 0;
+                for(int i = 0; i < list1.Count; i++)
                 {
-                    str += item + ":";
-
+                    kalor += list1[i] * datas[i].Calories;
+                    weight += list1[i] * datas[i].Weight;
+                    str += list1[i] + ":";
+                }
+                if((kalor >= K) && weight < minWeight)
+                {
+                    solution = list1;
+                    minWeight = weight;
                 }
                 str += "\n";
             }
+            MessageBox.Show(str);
+            str = "";
+            foreach (double x in solution)
+            {
+                str += x + "\n";
+            }
+            str += minWeight + "\n";
             MessageBox.Show(str);
         }
 
