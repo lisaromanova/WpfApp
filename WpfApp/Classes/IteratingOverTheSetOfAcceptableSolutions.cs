@@ -10,7 +10,34 @@ namespace WpfApp.Classes
 {
     public class IteratingOverTheSetOfAcceptableSolutions
     {
-        public static void Method(List<DataClass> datas, double K)
+        /// <summary>
+        /// Перестановки массива
+        /// </summary>
+        /// <param name="priorPermutations">Список списков вещественных чисел</param>
+        /// <param name="additions"></param>
+        /// <returns>Список всех возможных перестановок</returns>
+        static List<List<double>> RecursiveAppend(List<List<double>> priorPermutations, double[] additions)
+        {
+            List<List<double>> newPermutationsResult = new List<List<double>>();
+            foreach (List<double> priorPermutation in priorPermutations)
+            {
+                foreach (double addition in additions)
+                {
+                    List<double> priorWithAddition = new List<double>(priorPermutation);
+                    priorWithAddition.Add(addition);
+                    newPermutationsResult.Add(priorWithAddition);
+                }
+            }
+            return newPermutationsResult;
+        }
+
+        /// <summary>
+        /// Перебор множества допустимый решений
+        /// </summary>
+        /// <param name="datas">Список с данными</param>
+        /// <param name="K">Минимальная суммарная каллориность</param>
+        /// <returns>Строка с решением</returns>
+        public static string Method(List<DataClass> datas, double K)
         {
             List<double[]> myList = new List<double[]>();
             double minWeight = 0;
@@ -41,8 +68,6 @@ namespace WpfApp.Classes
             }
 
             //at this point the permutations variable contains all permutations
-            string str = "";
-            
             foreach (List<double> list1 in permutations)
             {
                 double kalor = 0;
@@ -51,95 +76,25 @@ namespace WpfApp.Classes
                 {
                     kalor += list1[i] * datas[i].Calories;
                     weight += list1[i] * datas[i].Weight;
-                    str += list1[i] + ":";
                 }
                 if((kalor >= K) && weight < minWeight)
                 {
                     solution = list1;
                     minWeight = weight;
                 }
-                str += "\n";
             }
-            MessageBox.Show(str);
-            str = "";
-            foreach (double x in solution)
+            string str = "Решение найдено!\n";
+            for (int i = 0; i < solution.Count; i++)
             {
-                str += x + "\n";
+                str += $"{i+1} вид продукции {solution[i]}\n";
             }
-            str += minWeight + "\n";
-            MessageBox.Show(str);
+            str += $"Минимальный вес {minWeight}\n";
+            if(solution.Count == 0)
+            {
+                return "Решения не существует";
+            }
+            return str;
         }
 
-        static List<List<double>> RecursiveAppend(List<List<double>> priorPermutations, double[] additions)
-        {
-            List<List<double>> newPermutationsResult = new List<List<double>>();
-            foreach (List<double> priorPermutation in priorPermutations)
-            {
-                foreach (double addition in additions)
-                {
-                    List<double> priorWithAddition = new List<double>(priorPermutation);
-                    priorWithAddition.Add(addition);
-                    newPermutationsResult.Add(priorWithAddition);
-                }
-            }
-            return newPermutationsResult;
-        }
-
-
-        //public static void Method(List<DataClass> datas, double K)
-        //{
-        //    //for (int i = 0; i <= maxCount[0]; i++)
-        //    //{
-        //    //    for (int j = 0; j <= maxCount[1]; j++)
-        //    //    {
-        //    //        if ((calories[0] * i + calories[1] * j >= K) && (weight[0] * i + weight[1] * j < minWeight))
-        //    //        {
-        //    //            minWeight = weight[0] * i + weight[1] * j;
-        //    //            resh[0] = i;
-        //    //            resh[1] = j;
-        //    //        }
-        //    //    }
-        //    //}
-        //    //Console.WriteLine(resh[0] + " " + resh[1] + " " + minWeight);
-
-
-        //    double minWeight = 0;
-        //    double[] resh = new double[datas.Count];
-        //    for (int i = 0; i < datas.Count; i++)
-        //    {
-        //        minWeight += datas[i].Weight * datas[i].MaxCount;
-        //    }
-
-        //    double kalor = 0;
-        //    double weight = 0;
-        //    for (int i = 0; i < datas.Count; i++)
-        //    {
-        //        kalor += datas[i].Calories * i + 1;
-        //        weight += datas[i].Weight * i + 1;
-        //    }
-        //    //double[] time = new double[datas.Count];
-        //    //while (true)
-        //    //{
-        //        //for (int i = 0; i < datas.Count; i++)
-        //        //{
-        //        //for (int j = 0; j <= datas[0].MaxCount; j++)
-        //        //{
-        //        //    for (int k = 1; k < datas.Count; k++)
-        //        //    {
-        //        //        for (int i = 0; i <= datas[k].MaxCount; i++)
-        //        //        {
-                            
-        //        //            if ((datas[k].Calories * i + calories[i] * j >= K) && (weight[0] * i + weight[1] * j < minWeight))
-        //        //            {
-
-        //        //                minWeight = weight[0] * i + weight[1] * j;
-        //        //                resh[0] = i;
-        //        //                resh[1] = j;
-        //        //            }
-        //        //        }
-        //        //    }
-        //        //}
-        //    //}
-        //}
     }
 }

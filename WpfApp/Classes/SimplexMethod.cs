@@ -264,44 +264,13 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Формирование массива с ответом
-        /// </summary>
-        /// <param name="n">Количество видов продукции</param>
-        /// <param name="simplex_table">Симплекс-таблица</param>
-        /// <returns>Массив с ответом и индексом строки ответа</returns>
-        static double[,] FormingMasSolution(int n, double[,] simplex_table)
-        {
-            //матрица, состоящая из строки решений и строки индексов в симплекс-таблице
-            double[,] masSolution = new double[2, n + 1];
-            for (int i = 1; i <= n; i++)
-            {
-                double x = 0;
-                int index = 0;
-                for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
-                {
-                    //если базис равен виду продукции решение есть
-                    if (i == simplex_table[j, 0])
-                    {
-                        x = simplex_table[j, simplex_table.GetLength(1) - 1];
-                        index = j;
-                    }
-                }
-                masSolution[0, i - 1] = x;
-                masSolution[1, i - 1] = index;
-            }
-            //записываем минимальный вес
-            masSolution[0, masSolution.GetLength(1) - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
-            return masSolution;
-        }
-
-        /// <summary>
         /// Решение задачи
         /// </summary>
         /// <param name="n">Количество видов продуктов</param>
         /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность</param>
         /// <returns>Массив с решением</returns>
-        public static string Solve(int n, List<DataClass> listData, double K, int method)
+        public static string Solve(int n, List<DataClass> listData, double K)
         {
             //int n = 3;
             //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };

@@ -21,7 +21,6 @@
                 <ComboBox Name="cbSolution">
                     <ComboBoxItem>Перебор множества допустимый решений</ComboBoxItem>
                     <ComboBoxItem>Симплекс-метод</ComboBoxItem>
-                    <!--<ComboBoxItem>Метод Гомори</ComboBoxItem>-->
                 </ComboBox>
             </GroupBox>
             <GroupBox Header="Ввод данных">

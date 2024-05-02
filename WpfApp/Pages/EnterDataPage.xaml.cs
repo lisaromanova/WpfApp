@@ -84,10 +84,10 @@ namespace WpfApp.Pages
                     switch (solve)
                     {
                         case 0:
-                            IteratingOverTheSetOfAcceptableSolutions.Method(data, Convert.ToDouble(tbMaxCallor.Text));
+                            FrameClass.frmMain.Navigate(new ResultPage(IteratingOverTheSetOfAcceptableSolutions.Method(data, Convert.ToDouble(tbMaxCallor.Text))));
                             break;
                         case 1:
-                            FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text), solve)));
+                            FrameClass.frmMain.Navigate(new ResultPage(Classes.SimplexMethod.Solve(n, data, Convert.ToDouble(tbMaxCallor.Text))));
                             break;
                         default:
                             MessageBox.Show("Ошибка!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
