@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -75,12 +77,34 @@ namespace WpfApp.Pages
             return true;
         }
 
+        void ReadDataFromFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Текстовые файлы (*.txt)|*.txt";
+            ofd.ShowDialog();
+
+        }
+
+        void SaveDataToFile()
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = "Текстовые файлы (*.txt)|*.txt";
+            saveFile.ShowDialog();
+            string path = saveFile.FileName;
+            File.WriteAllText(path, "Hello world");
+        }
+
         private void btnSolve_Click(object sender, RoutedEventArgs e)
         {
             if (CheckData())
             {
                 if (Regex.IsMatch(tbMaxCallor.Text, "^\\d+([.]\\d+)?$"))
                 {
+                    MessageBoxResult result = MessageBox.Show("Вы хотите сохранить данные в файл?", "Сохранение данных", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                    if(result == MessageBoxResult.Yes)
+                    {
+                        SaveDataToFile();
+                    }
                     switch (solve)
                     {
                         case 0:

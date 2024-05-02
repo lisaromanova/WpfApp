@@ -285,7 +285,7 @@ namespace WpfApp.Classes
             //double K = 200;
 
             double[,] simplex_table = FormingSimplexTable(n, listData, K);
-            PrintSimplexTable(simplex_table);
+            //PrintSimplexTable(simplex_table);
             bool solution = true;
             while (true)
             {
@@ -297,7 +297,7 @@ namespace WpfApp.Classes
                 {
                     CalculationOfDeltas(simplex_table);
                     bool optional = CheckOptimalSolution(simplex_table);
-                    PrintSimplexTable(simplex_table);
+                    //PrintSimplexTable(simplex_table);
                     if (optional)
                     {
                         break;
