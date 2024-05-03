@@ -42,13 +42,13 @@ namespace WpfApp.Classes
         /// <summary>
         /// Проверка на наличие отрицательных свободных коэффициентов
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>True - есть отрицательные свободные коэффициенты, False - нет отрицательных свободных коэффициентов</returns>
-        static bool CheckNegativeElements(double[,] simplex_table)
+        static bool CheckNegativeElements(double[,] simplexTable)
         {
-            for (int i = 0; i < simplex_table.GetLength(0); i++)
+            for (int i = 0; i < simplexTable.GetLength(0); i++)
             {
-                if (simplex_table[i, simplex_table.GetLength(1) - 1] < 0)
+                if (simplexTable[i, simplexTable.GetLength(1) - 1] < 0)
                 {
                     return true;
                 }
@@ -59,26 +59,26 @@ namespace WpfApp.Classes
         /// <summary>
         /// Пересчет элементов
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
-        /// <param name="resolving_element">Разрешающий элемент</param>
-        /// <param name="resolution_line">Разрешающая строка</param>
-        /// <param name="resolution_column">Разрешающий столбец</param>
-        static void Calculation(double[,] simplex_table, double resolving_element, int resolution_line, int resolution_column)
+        /// <param name="simplexTable">Симплекс-таблица</param>
+        /// <param name="resolvingElement">Разрешающий элемент</param>
+        /// <param name="resolutionLine">Разрешающая строка</param>
+        /// <param name="resolutionColumn">Разрешающий столбец</param>
+        static void Calculation(double[,] simplexTable, double resolvingElement, int resolutionLine, int resolutionColumn)
         {
             //Меняем базис
-            simplex_table[resolution_line, 0] = simplex_table[1, resolution_column];
-            for (int i = 1; i < simplex_table.GetLength(1); i++)
+            simplexTable[resolutionLine, 0] = simplexTable[1, resolutionColumn];
+            for (int i = 1; i < simplexTable.GetLength(1); i++)
             {
-                simplex_table[resolution_line, i] /= resolving_element;
+                simplexTable[resolutionLine, i] /= resolvingElement;
             }
-            for (int i = 2; i < simplex_table.GetLength(0) - 1; i++)
+            for (int i = 2; i < simplexTable.GetLength(0) - 1; i++)
             {
-                if (i != resolution_line)
+                if (i != resolutionLine)
                 {
-                    double k = simplex_table[i, resolution_column];
-                    for (int j = 1; j < simplex_table.GetLength(1); j++)
+                    double k = simplexTable[i, resolutionColumn];
+                    for (int j = 1; j < simplexTable.GetLength(1); j++)
                     {
-                        simplex_table[i, j] += simplex_table[resolution_line, j] * (-1) * k;
+                        simplexTable[i, j] += simplexTable[resolutionLine, j] * (-1) * k;
                     }
                 }
             }
@@ -87,70 +87,70 @@ namespace WpfApp.Classes
         /// <summary>
         /// Избавление от отрицательных элементов
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <param name="n">Количество видов продукции</param>
         /// <returns>True - решение существует, False - решения не существует</returns>
-        static bool NegativeElements(double[,] simplex_table, int n)
+        static bool NegativeElements(double[,] simplexTable, int n)
         {
-            double minimal_element_b = 0;
-            int index_resolving_line = 0;
+            double minimalElementB = 0;
+            int indexResolvingLine = 0;
             //Поиск строки с минимальным элементом
-            for (int i = 0; i < simplex_table.GetLength(0); i++)
+            for (int i = 0; i < simplexTable.GetLength(0); i++)
             {
-                if (simplex_table[i, simplex_table.GetLength(1) - 1] < minimal_element_b)
+                if (simplexTable[i, simplexTable.GetLength(1) - 1] < minimalElementB)
                 {
-                    minimal_element_b = simplex_table[i, simplex_table.GetLength(1) - 1];
-                    index_resolving_line = i;
+                    minimalElementB = simplexTable[i, simplexTable.GetLength(1) - 1];
+                    indexResolvingLine = i;
                 }
             }
-            double resolving_element = 0;
-            int index_resolution_column = 0;
+            double resolvingElement = 0;
+            int indexResolutionColumn = 0;
             //Поиск минимального элемента в строке
             for (int i = 1; i <= n; i++)
             {
-                if (simplex_table[index_resolving_line, i] < resolving_element)
+                if (simplexTable[indexResolvingLine, i] < resolvingElement)
                 {
-                    resolving_element = simplex_table[index_resolving_line, i];
-                    index_resolution_column = i;
+                    resolvingElement = simplexTable[indexResolvingLine, i];
+                    indexResolutionColumn = i;
                 }
             }
             //Если минимальный элемент отсутствует, то решения не существует
-            if (resolving_element == 0)
+            if (resolvingElement == 0)
             {
                 return false;
             }
-            Calculation(simplex_table, resolving_element, index_resolving_line, index_resolution_column);
+            Calculation(simplexTable, resolvingElement, indexResolvingLine, indexResolutionColumn);
             return true;
         }
 
         /// <summary>
         /// Расчет дельт
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
-        static void CalculationOfDeltas(double[,] simplex_table)
+        /// <param name="simplexTable">Симплекс-таблица</param>
+        static void CalculationOfDeltas(double[,] simplexTable)
         {
-            for (int j = 1; j < simplex_table.GetLength(1); j++)
+            for (int j = 1; j < simplexTable.GetLength(1); j++)
             {
                 double delta = 0;
-                for (int i = 2; i < simplex_table.GetLength(0) - 1; i++)
+                for (int i = 2; i < simplexTable.GetLength(0) - 1; i++)
                 {
-                    delta += simplex_table[i, j] * simplex_table[0, (int)simplex_table[i, 0]];
+                    delta += simplexTable[i, j] * simplexTable[0, (int)simplexTable[i, 0]];
                 }
-                delta -= simplex_table[0, j];
-                simplex_table[simplex_table.GetLength(0) - 1, j] = delta;
+                delta -= simplexTable[0, j];
+                simplexTable[simplexTable.GetLength(0) - 1, j] = delta;
             }
         }
 
         /// <summary>
         /// Проверка плана на оптимальность
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>True - план оптимален, False - план не оптимален</returns>
-        static bool CheckOptimalSolution(double[,] simplex_table)
+        static bool CheckOptimalSolution(double[,] simplexTable)
         {
-            for (int i = 1; i < simplex_table.GetLength(0) - 1; i++)
+            for (int i = 1; i < simplexTable.GetLength(0) - 1; i++)
             {
-                if (simplex_table[simplex_table.GetLength(0) - 1, i] > 0)
+                if (simplexTable[simplexTable.GetLength(0) - 1, i] > 0)
                 {
                     return false;
                 }
@@ -161,29 +161,29 @@ namespace WpfApp.Classes
         /// <summary>
         /// Поиск оптимального решения
         /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>True - решение существует, False - решения не сущуствует</returns>
-        static bool OptionalSolution(double[,] simplex_table)
+        static bool OptionalSolution(double[,] simplexTable)
         {
             double max_delta = 0;
             int index_resolving_column = 0;
             //поиск максимальной дельты
-            for (int i = 1; i < simplex_table.GetLength(1) - 1; i++)
+            for (int i = 1; i < simplexTable.GetLength(1) - 1; i++)
             {
-                if (simplex_table[simplex_table.GetLength(0) - 1, i] > max_delta)
+                if (simplexTable[simplexTable.GetLength(0) - 1, i] > max_delta)
                 {
-                    max_delta = simplex_table[simplex_table.GetLength(0) - 1, i];
+                    max_delta = simplexTable[simplexTable.GetLength(0) - 1, i];
                     index_resolving_column = i;
                 }
             }
-            double[] Q = new double[simplex_table.GetLength(0) - 3];
+            double[] Q = new double[simplexTable.GetLength(0) - 3];
             int count_zero = 0;
             //подсчет Q
-            for (int i = 2; i < simplex_table.GetLength(0) - 1; i++)
+            for (int i = 2; i < simplexTable.GetLength(0) - 1; i++)
             {
-                if (simplex_table[i, index_resolving_column] > 0)
+                if (simplexTable[i, index_resolving_column] > 0)
                 {
-                    Q[i - 2] = simplex_table[i, simplex_table.GetLength(1) - 1] / simplex_table[i, index_resolving_column];
+                    Q[i - 2] = simplexTable[i, simplexTable.GetLength(1) - 1] / simplexTable[i, index_resolving_column];
                 }
                 else
                 {
@@ -206,7 +206,7 @@ namespace WpfApp.Classes
                     index_resolving_line = i + 2;
                 }
             }
-            Calculation(simplex_table, simplex_table[index_resolving_line, index_resolving_column], index_resolving_line, index_resolving_column);
+            Calculation(simplexTable, simplexTable[index_resolving_line, index_resolving_column], index_resolving_line, index_resolving_column);
             return true;
         }
 
@@ -215,9 +215,9 @@ namespace WpfApp.Classes
         /// </summary>
         /// <param name="solution">Решение (есть или нет)</param>
         /// <param name="n">Количество видов продукции</param>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>Строка с решением</returns>
-        static string printData(bool solution, int n, double[,] simplex_table)
+        static string printData(bool solution, int n, double[,] simplexTable)
         {
             //проверка на наличие решения
             if (solution)
@@ -226,17 +226,17 @@ namespace WpfApp.Classes
                 for (int i = 1; i <= n; i++)
                 {
                     double x = 0;
-                    for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
+                    for (int j = 2; j < simplexTable.GetLength(0) - 1; j++)
                     {
                         //если базис равен виду продукции решение есть
-                        if (i == simplex_table[j, 0])
+                        if (i == simplexTable[j, 0])
                         {
-                            x = simplex_table[j, simplex_table.GetLength(1) - 1];
+                            x = simplexTable[j, simplexTable.GetLength(1) - 1];
                         }
                     }
                     str += $"{i} вид продукции {Math.Round(x,2)}\n";
                 }
-                str += $"Минимальный вес {Math.Round(simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1], 2)}";
+                str += $"Минимальный вес {Math.Round(simplexTable[simplexTable.GetLength(0) - 1, simplexTable.GetLength(1) - 1], 2)}";
                 return str;
             }
             else
