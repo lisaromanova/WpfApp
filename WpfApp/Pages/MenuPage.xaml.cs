@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.PerformanceData;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -26,19 +29,108 @@ namespace WpfApp.Pages
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Чтение данных из файла
+        /// </summary>
+        /// <returns>Путь к файлу с данными</returns>
+        string ReadDataFromFile()
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            //фильтрация выбора файла с расширением .txt
+            ofd.Filter = "Текстовые файлы (*.txt)|*.txt";
+            ofd.ShowDialog();
+            return ofd.FileName;
+        }
+
+        /// <summary>
+        /// Проверка данных в файле
+        /// </summary>
+        /// <param name="path">Путь к файлу</param>
+        /// <returns>True - данные верны, False - данные неверные</returns>
+        bool CheckDataFromFile(string path)
+        {
+            string[] datas = File.ReadAllLines(path);
+            //если в файле всего одна запись
+            if(datas.Length < 1)
+            {
+                return false;
+            }
+            for (int i = 0; i < datas.Length - 1; i++)
+            {
+                //разделение данных по пробелу
+                string[] data = datas[i].Split(' ');
+                //если количество данных по строке не равно 4
+                if(data.Length != 4)
+                {
+                    return false;
+                }
+                //проверка на дробные числа
+                foreach(string s in data)
+                {
+                    if (!Regex.IsMatch(s, "^\\d+([.]\\d+)?$"))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        if(Convert.ToDouble(s) <= 0)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+            //проверка суммарной каллорийности
+            if (!Regex.IsMatch(datas[datas.Length - 1], "^\\d+([.]\\d+)?$"))
+            {
+                return false;
+            }
+            else
+            {
+                if (Convert.ToDouble(datas[datas.Length - 1]) <= 0)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
         private void btnSolve_Click(object sender, RoutedEventArgs e)
         {
             if(cbEnterData.SelectedIndex != -1)
             {
                 if(cbSolution.SelectedIndex != -1)
                 {
-                    if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1)
+                    switch (cbEnterData.SelectedIndex)
                     {
-                        Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
-                    }
-                    else
-                    {
-                        MessageBox.Show("Введите целое число больше 0!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                        case 0:
+                        case 1:
+                            if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1)
+                            {
+                                Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
+                            }
+                            else
+                            {
+                                MessageBox.Show("Введите целое число больше 0!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                            }
+                            break;
+                        case 2:
+                            if (cbEnterData.SelectedIndex == 2)
+                            {
+                                string path = ReadDataFromFile();
+                                if (CheckDataFromFile(path))
+                                {
+                                    Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, path));
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Неверные данные в файле", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                            }
+                            break;
+                        default:
+                            MessageBox.Show("Ошибка!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                            break;
                     }
                 }
                 else

@@ -14,7 +14,7 @@ namespace WpfApp.Classes
         /// Перестановки массива
         /// </summary>
         /// <param name="priorPermutations">Список списков вещественных чисел</param>
-        /// <param name="additions"></param>
+        /// <param name="additions">Дополнения</param>
         /// <returns>Список всех возможных перестановок</returns>
         static List<List<double>> RecursiveAppend(List<List<double>> priorPermutations, double[] additions)
         {
@@ -35,7 +35,7 @@ namespace WpfApp.Classes
         /// Перебор множества допустимый решений
         /// </summary>
         /// <param name="datas">Список с данными</param>
-        /// <param name="K">Минимальная суммарная каллориность</param>
+        /// <param name="K">Минимальная суммарная калорийность</param>
         /// <returns>Строка с решением</returns>
         public static string Method(List<DataClass> datas, double K)
         {
@@ -67,7 +67,7 @@ namespace WpfApp.Classes
                 permutations = RecursiveAppend(permutations, myList[i]);
             }
 
-            //at this point the permutations variable contains all permutations
+            //На данный момент переменная permutations содержит все перестановки
             foreach (List<double> list1 in permutations)
             {
                 double kalor = 0;

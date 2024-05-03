@@ -40,24 +40,6 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Вывод симплекс-таблицы на экран
-        /// </summary>
-        /// <param name="simplex_table">Симплекс-таблица</param>
-        static void PrintSimplexTable(double[,] simplex_table)
-        {
-            string str = "";
-            for (int i = 0; i < simplex_table.GetLength(0); i++)
-            {
-                for (int j = 0; j < simplex_table.GetLength(1); j++)
-                {
-                    str += (Math.Round(simplex_table[i, j], 5) + "\t");
-                }
-                str += "\n";
-            }
-            Console.WriteLine(str);
-        }
-
-        /// <summary>
         /// Проверка на наличие отрицательных свободных коэффициентов
         /// </summary>
         /// <param name="simplex_table">Симплекс-таблица</param>
@@ -272,20 +254,7 @@ namespace WpfApp.Classes
         /// <returns>Массив с решением</returns>
         public static string Solve(int n, List<DataClass> listData, double K)
         {
-            //int n = 3;
-            //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
-            //double K = 4000;
-
-            //int n = 3;
-            //double[] weight = { 120, 50, 200 }, calories = { 100, 300, 500 }, maxCount = { 10, 4, 4 };
-            //double K = 5000;
-
-            //int n = 2;
-            //double[] weight = { 10, 20 }, calories = { 30, 40 }, maxCount = { 5, 6 };
-            //double K = 200;
-
             double[,] simplex_table = FormingSimplexTable(n, listData, K);
-            //PrintSimplexTable(simplex_table);
             bool solution = true;
             while (true)
             {
@@ -297,7 +266,6 @@ namespace WpfApp.Classes
                 {
                     CalculationOfDeltas(simplex_table);
                     bool optional = CheckOptimalSolution(simplex_table);
-                    //PrintSimplexTable(simplex_table);
                     if (optional)
                     {
                         break;

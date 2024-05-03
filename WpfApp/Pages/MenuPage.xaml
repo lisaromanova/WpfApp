@@ -27,6 +27,7 @@
                 <ComboBox Name="cbEnterData">
                     <ComboBoxItem>Ручной ввод</ComboBoxItem>
                     <ComboBoxItem>Генерация случайным образом</ComboBoxItem>
+                    <ComboBoxItem>Восстановление исходных данных с файла</ComboBoxItem>
                 </ComboBox>
             </GroupBox>
             <GroupBox Header="Количество видов продукции">

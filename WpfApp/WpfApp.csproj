@@ -119,5 +119,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="FilesWithData\ThreeProductType_WithoutSolution.txt" />
+    <Resource Include="FilesWithData\ThreeProductType_WithSolution.txt" />
+    <Resource Include="FilesWithData\TwoProductType.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

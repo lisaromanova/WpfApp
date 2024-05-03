@@ -9,6 +9,9 @@ namespace WpfApp.Classes
 {
     public class FrameClass
     {
+        /// <summary>
+        /// Frame для навигации по страницам
+        /// </summary>
         public static Frame frmMain;
     }
 }
