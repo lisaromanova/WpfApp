@@ -116,9 +116,9 @@ namespace WpfApp.Pages
         {
             foreach (DataClass dataClass in data)
             {
-                if (dataClass.Weight <= 0 ||
-                    dataClass.Calories <= 0 ||
-                    dataClass.MaxCount <= 0)
+                if (dataClass.Weight < 1 ||
+                    dataClass.Calories < 1 ||
+                    dataClass.MaxCount < 1)
                 {
                     return false;
                 }
