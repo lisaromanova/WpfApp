@@ -19,7 +19,7 @@
             <TextBlock Text="Экономическая задача оптимизации закупок" FontSize="24" Margin="0,0,0,20" HorizontalAlignment="Center"/>
             <GroupBox Header="Способ решения">
                 <ComboBox Name="cbSolution">
-                    <ComboBoxItem>Перебор множества допустимый решений</ComboBoxItem>
+                    <ComboBoxItem>Перебор значений</ComboBoxItem>
                     <ComboBoxItem>Симплекс-метод</ComboBoxItem>
                 </ComboBox>
             </GroupBox>

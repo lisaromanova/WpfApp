@@ -105,13 +105,13 @@ namespace WpfApp.Pages
                     {
                         case 0:
                         case 1:
-                            if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1)
+                            if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1 && Convert.ToInt32(tbN.Text) <= 10)
                             {
                                 Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
                             }
                             else
                             {
-                                MessageBox.Show("Введите целое число больше 0!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                                MessageBox.Show("Введите целое число больше 0 и меньше 10!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                             break;
                         case 2:
