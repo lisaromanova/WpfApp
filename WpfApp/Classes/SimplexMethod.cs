@@ -216,17 +216,17 @@ namespace WpfApp.Classes
         /// <param name="solution">Решение (есть или нет)</param>
         /// <param name="masSolution">Массив с решением</param>
         /// <returns>Строка с решением</returns>
-        static string printData(bool solution, double[,] masSolution)
+        static string printData(bool solution, double[] masSolution)
         {
             //проверка на наличие решения
             if (solution)
             {
                 string str = "Решение найдено!\n";
-                for (int i = 0; i < masSolution.GetLength(1) - 1; i++)
+                for (int i = 0; i < masSolution.Length - 1; i++)
                 {
-                    str += $"{i + 1} вид продукции {Math.Round(masSolution[0, i], 2)}\n";
+                    str += $"{i + 1} вид продукции {Math.Round(masSolution[i], 2)}\n";
                 }
-                str += $"Минимальный вес {Math.Round(masSolution[0, masSolution.GetLength(1) - 1], 2)}";
+                str += $"Минимальный вес {Math.Round(masSolution[masSolution.Length - 1], 2)}";
                 return str;
             }
             else
@@ -241,28 +241,25 @@ namespace WpfApp.Classes
         /// <param name="n">Количество видов продукции</param>
         /// <param name="simplex_table">Симплекс-таблица</param>
         /// <returns>Массив с ответом и индексом строки ответа</returns>
-        static double[,] FormingMasSolution(int n, double[,] simplex_table)
+        static double[] FormingMasSolution(int n, double[,] simplex_table)
         {
             //матрица, состоящая из строки решений и строки индексов в симплекс-таблице
-            double[,] masSolution = new double[2, n + 1];
+            double[] masSolution = new double[n + 1];
             for (int i = 1; i <= n; i++)
             {
                 double x = 0;
-                int index = 0;
                 for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
                 {
                     //если базис равен виду продукции решение есть
                     if (i == simplex_table[j, 0])
                     {
                         x = simplex_table[j, simplex_table.GetLength(1) - 1];
-                        index = j;
                     }
                 }
-                masSolution[0, i - 1] = x;
-                masSolution[1, i - 1] = index;
+                masSolution[i - 1] = x;
             }
             //записываем минимальный вес
-            masSolution[0, masSolution.GetLength(1) - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
+            masSolution[masSolution.Length - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
             return masSolution;
         }
 
