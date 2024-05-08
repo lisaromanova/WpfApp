@@ -8,7 +8,7 @@ using System.Windows;
 
 namespace WpfApp.Classes
 {
-    public class IteratingOverTheSetOfAcceptableSolutions
+    public class Iterating
     {
         /// <summary>
         /// Перестановки массива
@@ -16,7 +16,7 @@ namespace WpfApp.Classes
         /// <param name="priorPermutations">Список списков вещественных чисел</param>
         /// <param name="additions">Дополнения</param>
         /// <returns>Список всех возможных перестановок</returns>
-        static List<List<double>> RecursiveAppend(List<List<double>> priorPermutations, double[] additions)
+        static List<List<double>> AppendArray(List<List<double>> priorPermutations, double[] additions)
         {
             List<List<double>> newPermutationsResult = new List<List<double>>();
             foreach (List<double> priorPermutation in priorPermutations)
@@ -64,7 +64,7 @@ namespace WpfApp.Classes
 
             for (int i = 1; i < myList.Count; ++i)
             {
-                permutations = RecursiveAppend(permutations, myList[i]);
+                permutations = AppendArray(permutations, myList[i]);
             }
 
             //На данный момент переменная permutations содержит все перестановки

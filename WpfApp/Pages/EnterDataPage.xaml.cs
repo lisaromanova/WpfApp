@@ -136,15 +136,15 @@ namespace WpfApp.Pages
             saveFile.Filter = "Текстовые файлы (*.txt)|*.txt";
             saveFile.ShowDialog();
             //формирование строки с данными
-            string str = "";
+            string strData = "";
             foreach(DataClass dataClass in data)
             {
-                str += $"{dataClass.Id} {dataClass.Weight} {dataClass.Calories} {dataClass.MaxCount}\n";
+                strData += $"{dataClass.Id} {dataClass.Weight} {dataClass.Calories} {dataClass.MaxCount}\n";
             }
-            str += tbMaxCallor.Text;
+            strData += tbMaxCallor.Text;
             string path = saveFile.FileName;
             //запись строки в файл
-            File.WriteAllText(path, str);
+            File.WriteAllText(path, strData);
             MessageBox.Show("Данные успешно сохранены!", "Информация", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -156,8 +156,8 @@ namespace WpfApp.Pages
                 {
                     try
                     {
-                        MessageBoxResult result = MessageBox.Show("Вы хотите сохранить данные в файл?", "Сохранение данных", MessageBoxButton.YesNo, MessageBoxImage.Question);
-                        if (result == MessageBoxResult.Yes)
+                        MessageBoxResult mgResult = MessageBox.Show("Вы хотите сохранить данные в файл?", "Сохранение данных", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                        if (mgResult == MessageBoxResult.Yes)
                         {
                             SaveDataToFile();
                         }
@@ -171,7 +171,7 @@ namespace WpfApp.Pages
                         switch (solve)
                         {
                             case 0:
-                                FrameClass.frmMain.Navigate(new ResultPage(IteratingOverTheSetOfAcceptableSolutions.Method(data, Convert.ToDouble(tbMaxCallor.Text))));
+                                FrameClass.frmMain.Navigate(new ResultPage(Iterating.Method(data, Convert.ToDouble(tbMaxCallor.Text))));
                                 break;
                             case 1:
                                 FrameClass.frmMain.Navigate(new ResultPage(SimplexMethod.Solve(data.Count, data, Convert.ToDouble(tbMaxCallor.Text))));

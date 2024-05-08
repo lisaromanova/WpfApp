@@ -49,23 +49,23 @@ namespace WpfApp.Pages
         /// <returns>True - данные верны, False - данные неверные</returns>
         bool CheckDataFromFile(string path)
         {
-            string[] datas = File.ReadAllLines(path);
+            string[] dataLines = File.ReadAllLines(path);
             //если в файле всего одна запись
-            if(datas.Length < 1)
+            if(dataLines.Length <= 1)
             {
                 return false;
             }
-            for (int i = 0; i < datas.Length - 1; i++)
+            for (int i = 0; i < dataLines.Length - 1; i++)
             {
                 //разделение данных по пробелу
-                string[] data = datas[i].Split(' ');
+                string[] dataLine = dataLines[i].Split(' ');
                 //если количество данных по строке не равно 4
-                if(data.Length != 4)
+                if(dataLine.Length != 4)
                 {
                     return false;
                 }
                 //проверка на дробные числа
-                foreach(string s in data)
+                foreach(string s in dataLine)
                 {
                     if (!Regex.IsMatch(s, "^\\d+([.]\\d+)?$"))
                     {
@@ -81,13 +81,13 @@ namespace WpfApp.Pages
                 }
             }
             //проверка суммарной каллорийности
-            if (!Regex.IsMatch(datas[datas.Length - 1], "^\\d+([.]\\d+)?$"))
+            if (!Regex.IsMatch(dataLines[dataLines.Length - 1], "^\\d+([.]\\d+)?$"))
             {
                 return false;
             }
             else
             {
-                if (Convert.ToDouble(datas[datas.Length - 1]) <= 0)
+                if (Convert.ToDouble(dataLines[dataLines.Length - 1]) <= 0)
                 {
                     return false;
                 }

@@ -93,25 +93,25 @@ namespace WpfApp.Classes
         static bool NegativeElements(double[,] simplexTable, int n)
         {
             double minimalElementB = 0;
-            int indexResolvingLine = 0;
+            int resolvingLine = 0;
             //Поиск строки с минимальным элементом
             for (int i = 0; i < simplexTable.GetLength(0); i++)
             {
                 if (simplexTable[i, simplexTable.GetLength(1) - 1] < minimalElementB)
                 {
                     minimalElementB = simplexTable[i, simplexTable.GetLength(1) - 1];
-                    indexResolvingLine = i;
+                    resolvingLine = i;
                 }
             }
             double resolvingElement = 0;
-            int indexResolutionColumn = 0;
+            int resolutionColumn = 0;
             //Поиск минимального элемента в строке
             for (int i = 1; i <= n; i++)
             {
-                if (simplexTable[indexResolvingLine, i] < resolvingElement)
+                if (simplexTable[resolvingLine, i] < resolvingElement)
                 {
-                    resolvingElement = simplexTable[indexResolvingLine, i];
-                    indexResolutionColumn = i;
+                    resolvingElement = simplexTable[resolvingLine, i];
+                    resolutionColumn = i;
                 }
             }
             //Если минимальный элемент отсутствует, то решения не существует
@@ -119,7 +119,7 @@ namespace WpfApp.Classes
             {
                 return false;
             }
-            Calculation(simplexTable, resolvingElement, indexResolvingLine, indexResolutionColumn);
+            Calculation(simplexTable, resolvingElement, resolvingLine, resolutionColumn);
             return true;
         }
 
@@ -165,48 +165,48 @@ namespace WpfApp.Classes
         /// <returns>True - решение существует, False - решения не сущуствует</returns>
         static bool OptionalSolution(double[,] simplexTable)
         {
-            double max_delta = 0;
-            int index_resolving_column = 0;
+            double maxDelta = 0;
+            int resolvingColumn = 0;
             //поиск максимальной дельты
             for (int i = 1; i < simplexTable.GetLength(1) - 1; i++)
             {
-                if (simplexTable[simplexTable.GetLength(0) - 1, i] > max_delta)
+                if (simplexTable[simplexTable.GetLength(0) - 1, i] > maxDelta)
                 {
-                    max_delta = simplexTable[simplexTable.GetLength(0) - 1, i];
-                    index_resolving_column = i;
+                    maxDelta = simplexTable[simplexTable.GetLength(0) - 1, i];
+                    resolvingColumn = i;
                 }
             }
             double[] Q = new double[simplexTable.GetLength(0) - 3];
-            int count_zero = 0;
+            int countZero = 0;
             //подсчет Q
             for (int i = 2; i < simplexTable.GetLength(0) - 1; i++)
             {
-                if (simplexTable[i, index_resolving_column] > 0)
+                if (simplexTable[i, resolvingColumn] > 0)
                 {
-                    Q[i - 2] = simplexTable[i, simplexTable.GetLength(1) - 1] / simplexTable[i, index_resolving_column];
+                    Q[i - 2] = simplexTable[i, simplexTable.GetLength(1) - 1] / simplexTable[i, resolvingColumn];
                 }
                 else
                 {
-                    count_zero++;
+                    countZero++;
                 }
             }
             //если все элементы разрешающего столбца отрицательны то решения нет
-            if (count_zero == Q.Length)
+            if (countZero == Q.Length)
             {
                 return false;
             }
             double minQ = Q[0];
-            int index_resolving_line = 2;
+            int resolvingLine = 2;
             //поиск минимального значения Q, для определения разрешающей строки
             for (int i = 0; i < Q.Length; i++)
             {
                 if (Q[i] < minQ && Q[i] != 0)
                 {
                     minQ = Q[i];
-                    index_resolving_line = i + 2;
+                    resolvingLine = i + 2;
                 }
             }
-            Calculation(simplexTable, simplexTable[index_resolving_line, index_resolving_column], index_resolving_line, index_resolving_column);
+            Calculation(simplexTable, simplexTable[resolvingLine, resolvingColumn], resolvingLine, resolvingColumn);
             return true;
         }
 
@@ -240,7 +240,7 @@ namespace WpfApp.Classes
         /// </summary>
         /// <param name="n">Количество видов продукции</param>
         /// <param name="simplex_table">Симплекс-таблица</param>
-        /// <returns>Массив с ответом и индексом строки ответа</returns>
+        /// <returns>Массив с оптимальным решением</returns>
         static double[] FormingMasSolution(int n, double[,] simplex_table)
         {
             //матрица, состоящая из строки решений и строки индексов в симплекс-таблице
