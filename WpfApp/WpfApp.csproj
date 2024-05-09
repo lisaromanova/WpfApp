@@ -119,11 +119,21 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Resource Include="FilesWithData\ThreeProductType_WithoutSolution.txt" />
-    <Resource Include="FilesWithData\ThreeProductType_WithSolution.txt" />
-    <Resource Include="FilesWithData\TwoProductType.txt" />
+    <None Include="FilesWithData\Example.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FilesWithData\ThreeProductType_WithoutSolution.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FilesWithData\ThreeProductType_WithSolution.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="FilesWithData\TwoProductType.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

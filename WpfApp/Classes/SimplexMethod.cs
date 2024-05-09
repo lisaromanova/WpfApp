@@ -239,27 +239,27 @@ namespace WpfApp.Classes
         /// Формирование массива с ответом
         /// </summary>
         /// <param name="n">Количество видов продукции</param>
-        /// <param name="simplex_table">Симплекс-таблица</param>
+        /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>Массив с оптимальным решением</returns>
-        static double[] FormingMasSolution(int n, double[,] simplex_table)
+        static double[] FormingMasSolution(int n, double[,] simplexTable)
         {
             //матрица, состоящая из строки решений и строки индексов в симплекс-таблице
             double[] masSolution = new double[n + 1];
             for (int i = 1; i <= n; i++)
             {
                 double x = 0;
-                for (int j = 2; j < simplex_table.GetLength(0) - 1; j++)
+                for (int j = 2; j < simplexTable.GetLength(0) - 1; j++)
                 {
                     //если базис равен виду продукции решение есть
-                    if (i == simplex_table[j, 0])
+                    if (i == simplexTable[j, 0])
                     {
-                        x = simplex_table[j, simplex_table.GetLength(1) - 1];
+                        x = simplexTable[j, simplexTable.GetLength(1) - 1];
                     }
                 }
                 masSolution[i - 1] = x;
             }
             //записываем минимальный вес
-            masSolution[masSolution.Length - 1] = simplex_table[simplex_table.GetLength(0) - 1, simplex_table.GetLength(1) - 1];
+            masSolution[masSolution.Length - 1] = simplexTable[simplexTable.GetLength(0) - 1, simplexTable.GetLength(1) - 1];
             return masSolution;
         }
 
