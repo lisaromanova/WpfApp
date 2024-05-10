@@ -65,7 +65,7 @@
     </Compile>
     <Compile Include="Classes\DataClass.cs" />
     <Compile Include="Classes\FrameClass.cs" />
-    <Compile Include="Classes\Iterating.cs" />
+    <Compile Include="Classes\IteratingMethod.cs" />
     <Compile Include="Classes\SimplexMethod.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>

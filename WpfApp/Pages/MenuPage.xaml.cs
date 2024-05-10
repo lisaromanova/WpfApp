@@ -107,7 +107,7 @@ namespace WpfApp.Pages
                         case 1:
                             if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1 && Convert.ToInt32(tbN.Text) <= 10)
                             {
-                                Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text)));
+                                Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text), null));
                             }
                             else
                             {
@@ -115,17 +115,21 @@ namespace WpfApp.Pages
                             }
                             break;
                         case 2:
-                            if (cbEnterData.SelectedIndex == 2)
+                            try
                             {
                                 string path = ReadDataFromFile();
                                 if (CheckDataFromFile(path))
                                 {
-                                    Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, path));
+                                    Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, 0, path));
                                 }
                                 else
                                 {
                                     MessageBox.Show("Неверные данные в файле", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
+                            }
+                            catch
+                            {
+                                MessageBox.Show("Ошибка выбора файла!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                             }
                             break;
                         default:

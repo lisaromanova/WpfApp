@@ -57,7 +57,7 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Пересчет элементов
+        /// Пересчет элементов симплекс-таблицы
         /// </summary>
         /// <param name="simplexTable">Симплекс-таблица</param>
         /// <param name="resolvingElement">Разрешающий элемент</param>
@@ -85,7 +85,7 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Избавление от отрицательных элементов
+        /// Избавление от отрицательных свободных коэффициентов
         /// </summary>
         /// <param name="simplexTable">Симплекс-таблица</param>
         /// <param name="n">Количество видов продукции</param>
@@ -146,7 +146,7 @@ namespace WpfApp.Classes
         /// </summary>
         /// <param name="simplexTable">Симплекс-таблица</param>
         /// <returns>True - план оптимален, False - план не оптимален</returns>
-        static bool CheckOptimalSolution(double[,] simplexTable)
+        static bool CheckOptionalSolution(double[,] simplexTable)
         {
             for (int i = 1; i < simplexTable.GetLength(0) - 1; i++)
             {
@@ -211,12 +211,12 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Вывод данных
+        /// Формирование строки с ответом
         /// </summary>
         /// <param name="solution">Решение (есть или нет)</param>
         /// <param name="masSolution">Массив с решением</param>
-        /// <returns>Строка с решением</returns>
-        static string printData(bool solution, double[] masSolution)
+        /// <returns>Строка с ответом</returns>
+        static string PrintData(bool solution, double[] masSolution)
         {
             //проверка на наличие решения
             if (solution)
@@ -236,7 +236,7 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Формирование массива с ответом
+        /// Формирование массива с оптимальным решением
         /// </summary>
         /// <param name="n">Количество видов продукции</param>
         /// <param name="simplexTable">Симплекс-таблица</param>
@@ -264,12 +264,12 @@ namespace WpfApp.Classes
         }
 
         /// <summary>
-        /// Решение задачи
+        /// Решение задачи симплекс-методом
         /// </summary>
         /// <param name="n">Количество видов продуктов</param>
         /// <param name="listData">Список с данными</param>
         /// <param name="K">Минимальная суммарная калорийность</param>
-        /// <returns>Массив с решением</returns>
+        /// <returns>Строка с ответом</returns>
         public static string Solve(int n, List<DataClass> listData, double K)
         {
             double[,] simplex_table = FormingSimplexTable(n, listData, K);
@@ -283,7 +283,7 @@ namespace WpfApp.Classes
                 else
                 {
                     CalculationOfDeltas(simplex_table);
-                    bool optional = CheckOptimalSolution(simplex_table);
+                    bool optional = CheckOptionalSolution(simplex_table);
                     if (optional)
                     {
                         break;
@@ -294,7 +294,8 @@ namespace WpfApp.Classes
                     }
                 }
             }
-            return printData(solution, FormingMasSolution(n, simplex_table));
+            string str = PrintData(solution, FormingMasSolution(n, simplex_table));
+            return str;
         }
     }
 }
