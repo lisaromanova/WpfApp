@@ -18,6 +18,12 @@
         <StackPanel VerticalAlignment="Center" Grid.Row="0">
             <TextBlock Text="Экономическая задача оптимизации закупок" FontSize="24" Margin="0,0,0,20" HorizontalAlignment="Center"/>
             <GroupBox Header="Способ решения">
+                <GroupBox.ToolTip>
+                    <ToolTip>
+                        Для метода перебора значений максимальное количество видов продукции равно 5.
+                        Для симплекс-метода максимальное количество видов продукции равно 10.
+                    </ToolTip>
+                </GroupBox.ToolTip>
                 <ComboBox Name="cbSolution">
                     <ComboBoxItem>Перебор значений</ComboBoxItem>
                     <ComboBoxItem>Симплекс-метод</ComboBoxItem>

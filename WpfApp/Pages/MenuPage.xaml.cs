@@ -51,7 +51,7 @@ namespace WpfApp.Pages
         {
             string[] dataLines = File.ReadAllLines(path);
             //если в файле всего одна запись
-            if(dataLines.Length <= 1)
+            if(dataLines.Length <= 1 || (cbSolution.SelectedIndex == 0 && dataLines.Length > 6) || (cbSolution.SelectedIndex == 1 && dataLines.Length > 11))
             {
                 return false;
             }
@@ -105,13 +105,20 @@ namespace WpfApp.Pages
                     {
                         case 0:
                         case 1:
-                            if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1 && Convert.ToInt32(tbN.Text) <= 10)
+                            if (Regex.IsMatch(tbN.Text, "^\\d+$") && Convert.ToInt32(tbN.Text) >= 1 && ((cbSolution.SelectedIndex == 0 && Convert.ToInt32(tbN.Text) <= 5) || (cbSolution.SelectedIndex == 1 && Convert.ToInt32(tbN.Text) <= 10)))
                             {
                                 Classes.FrameClass.frmMain.Navigate(new EnterDataPage(cbSolution.SelectedIndex, cbEnterData.SelectedIndex, Convert.ToInt32(tbN.Text), null));
                             }
                             else
                             {
-                                MessageBox.Show("Введите целое число больше 0 и меньше 10!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                                if(cbSolution.SelectedIndex == 0)
+                                {
+                                    MessageBox.Show("Введите целое число больше 0 и меньше 5!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Введите целое число больше 0 и меньше 10!", "Количество видов продукции", MessageBoxButton.OK, MessageBoxImage.Error);
+                                }
                             }
                             break;
                         case 2:
